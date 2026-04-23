@@ -1,0 +1,113 @@
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #f5f7fb;
+}
+
+.navbar {
+  background: #1e3a8a;
+  color: white;
+  padding: 15px;
+  font-size: 20px;
+}
+
+.container {
+  padding: 20px;
+}
+
+/* CARDS */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+/* CHARTS */
+.charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.chart-box {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* LOWER SECTION */
+.lower {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* PREDICTION BOX */
+.predict-box {
+  background: #1e3a8a;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 50vw;
+}
+
+.predict-box textarea {
+  width: 97%;
+  height: 120px;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  resize: none;
+  margin-left: 4px;
+  
+}
+
+.predict-box button {
+  width: 100%;
+  padding: 10px;
+  background: #3b82f6;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.result li {
+  word-wrap: break-word;
+}
+
+.result p {
+  margin: 10px 0;
+}
+
+.result ul {
+  margin: 5px 0 15px 15px;
+}
+
+/* TABLE */
+.table-box {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}

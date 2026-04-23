@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Aviation Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  ✈ Aviation Accident Fault Detection System
+</div>
+
+<div class="container">
+
+  <!-- TOP CARDS -->
+  <div class="cards">
+    <div class="card"><h4>Total Incidents</h4><p>152</p></div>
+    <div class="card"><h4>High Risk</h4><p>28</p></div>
+    <div class="card"><h4>Common Fault</h4><p>Human Error</p></div>
+    <div class="card"><h4>Accuracy</h4><p>92%</p></div>
+  </div>
+
+  <!-- LOWER SECTION -->
+  <div class="lower">
+
+    <!-- PREDICTION PANEL -->
+    <div class="predict-box">
+      <h3>Risk Prediction</h3>
+
+      <textarea id="incidentInput"
+        placeholder="Enter incident description (e.g. Engine vibration during stormy takeoff)..."></textarea>
+
+      <button onclick="predict()"><b>Analyze</b></button>
+
+      <div class="result">
+        <p><b>Predicted Faults:</b> <span id="faults">-</span></p>
+
+        <p><b>Confidence:</b></p>
+        <ul id="confidenceList"></ul>
+
+        <p><b>Suggested Actions:</b></p>
+        <ul id="actionsList"></ul>
+
+        <p><b>Similar Cases:</b></p>
+        <ul id="evidenceList"></ul>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-box">
+      <h3>Recent Incidents</h3>
+
+      <table>
+        <tr>
+          <th>Date</th>
+          <th>Aircraft</th>
+          <th>Fault</th>
+          <th>Severity</th>
+        </tr>
+
+        <tr>
+          <td>03/21</td>
+          <td>A320</td>
+          <td>Human Error</td>
+          <td>High</td>
+        </tr>
+
+        <tr>
+          <td>03/18</td>
+          <td>B737</td>
+          <td>Engine Failure</td>
+          <td>Critical</td>
+        </tr>
+
+      </table>
+    </div>
+
+  </div>
+
+  <!-- CHART SECTION (FIXED STRUCTURE) -->
+  <div class="charts">
+
+    <div class="chart-box">
+      <h3>Fault Distribution</h3>
+      <canvas id="pieChart"></canvas>
+    </div>
+
+    <div class="chart-box">
+      <h3>Severity</h3>
+      <canvas id="barChart"></canvas>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
