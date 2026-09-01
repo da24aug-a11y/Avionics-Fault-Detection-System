@@ -1,0 +1,70 @@
+#To be run in local first
+import pandas as pd
+import numpy as np
+import spacy
+from sentence_transformers import SentenceTransformer
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.preprocessing import MultiLabelBinarizer
+from sklearn.multiclass import OneVsRestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+import pickle
+
+# HELPER FUNCTIONS
+def preprocess_text(text, nlp_model):
+    doc = nlp_model(text.lower())
+    tokens = [t.lemma_ for t in doc if not t.is_stop and not t.is_punct]
+    return " ".join(tokens)
+
+key_weather = {"storm" , "rain" ,"wind" ,"turbulence" ,"icing","bird"}
+key_mech = {"mechanical" , "failure" , "gear" , "flaps" ,"wing" , "wings" ,"rudder","failed","fuel" ,"stuck","jammed"}
+key_human = {"pilot", "human" ,"intoxicated" ,"fainted" ,"froze" ,"misjudgement" ,"violation"}
+def label_faults_func(text):
+    text = text.lower()
+    labels = []
+    if "engine" in text or "temperature" in text or "spike" in text:
+        labels.append("Engine Failure")
+    if any(word in text for word in key_weather):
+        labels.append("Weather")
+    if any(word in text for word in key_human):
+        labels.append("Human Error")
+    if any(word in text for word in key_mech):
+        labels.append("Mechanical Failure")
+    if not labels:
+        labels.append("Other")
+    return labels
+
+
+# LOAD + TRAIN
+df = pd.read_csv("aviation_accidents.csv").dropna(subset=["Summary"]).reset_index(drop=True)
+
+nlp = spacy.load("en_core_web_sm")
+
+df["clean_text"] = df["Summary"].apply(lambda x: preprocess_text(x, nlp))
+df["faults"] = df["Summary"].apply(label_faults_func)
+
+mlb = MultiLabelBinarizer()
+y = mlb.fit_transform(df["faults"])
+
+tfidf = TfidfVectorizer(max_features=5000)
+X = tfidf.fit_transform(df["clean_text"])
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+model = OneVsRestClassifier(LogisticRegression(max_iter=1000))
+model.fit(X_train, y_train)
+
+# SBERT EMBEDDINGS
+sbert_model = SentenceTransformer("all-MiniLM-L6-v2")
+embeddings = sbert_model.encode(df["Summary"].tolist(), show_progress_bar=False)
+
+
+# SAVE EVERYTHING
+pickle.dump(model, open("model.pkl", "wb"))
+pickle.dump(tfidf, open("tfidf.pkl", "wb"))
+pickle.dump(mlb, open("mlb.pkl", "wb"))
+pickle.dump(embeddings, open("embeddings.pkl", "wb"))
+df.to_pickle("df.pkl")
+
+print("✅ All files saved successfully!")
